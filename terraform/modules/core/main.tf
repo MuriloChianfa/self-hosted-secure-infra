@@ -23,13 +23,16 @@ resource "proxmox_pool" "core-pool" {
 }
 
 resource "proxmox_vm_qemu" "core" {
+  for_each = var.vms
+  vmid = each.key
+
   target_node = var.proxmox_host
-  name = "ca"
+  name = each.value.name
   desc = <<EOF
   asd
   EOF
 
-  tags = "core,crypto"
+  tags = "core"
   pool = "CORE"
 
   clone = var.template_name
@@ -37,10 +40,10 @@ resource "proxmox_vm_qemu" "core" {
 
   cpu = "x86-64-v2-AES"
   sockets = 1
-  cores = 2
+  cores = each.value.cores
 
-  memory = 2048
-  balloon = 0
+  memory = each.value.memory
+  balloon = 512
 
   boot = "order=scsi0"
   bootdisk = "scsi0"
@@ -55,7 +58,7 @@ resource "proxmox_vm_qemu" "core" {
     scsi {
       scsi0 {
         disk {
-          size = 32
+          size = each.value.memory
           cache = "none"
           storage = "hdd-lvm"
           iothread = false

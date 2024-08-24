@@ -36,3 +36,7 @@ variable "storage" {
     default = "hdd-lvm"
     type = string
 }
+
+variable "vms" {
+  default = {}
+}
