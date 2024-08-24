@@ -21,7 +21,7 @@ variable "proxmox_host" {
 
 variable "template_name" {
   description = "Template name for VM cloning"
-  default = "debian"
+  default = "debian12-cloudinit-template"
   type = string
 }
 
@@ -39,7 +39,7 @@ variable "nic_vlan" {
 
 variable "storage" {
   description = "Storage for the VM disk"
-  default = "hdd-lvm"
+  default = "local-lvm"
   type = string
 }
 

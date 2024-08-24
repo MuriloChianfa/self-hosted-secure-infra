@@ -24,7 +24,7 @@ resource "proxmox_vm_qemu" "core" {
   target_node = var.proxmox_host
   name = each.value.name
   desc = <<EOF
-  # ${var.pool}: ${each.value.name}
+  ## ${each.value.title}
 
   *Description*: ${each.value.description}
 
@@ -67,7 +67,7 @@ resource "proxmox_vm_qemu" "core" {
     scsi {
       scsi0 {
         disk {
-          size = each.value.memory
+          size = each.value.hdd
           cache = "none"
           storage = var.storage
           iothread = false
@@ -80,5 +80,5 @@ resource "proxmox_vm_qemu" "core" {
 
   ciuser = var.ciuser
   cipassword  = var.cipass
-  onboot = each.value.onboot
+  onboot = true
 }
