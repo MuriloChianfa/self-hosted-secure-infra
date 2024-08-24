@@ -17,11 +17,6 @@ provider "proxmox" {
   pm_log_file = "terraform-plugin-proxmox.log"
 }
 
-resource "proxmox_pool" "core-pool" {
-  poolid = "CORE"
-  comment = "Resource pool for core infrastructure virtual machines"
-}
-
 resource "proxmox_vm_qemu" "core" {
   for_each = var.vms
   vmid = each.key
@@ -29,12 +24,17 @@ resource "proxmox_vm_qemu" "core" {
   target_node = var.proxmox_host
   name = each.value.name
   desc = <<EOF
-  asd
+  # ${var.pool}: ${each.value.name}
+
+  *Description*: ${each.value.description}
+
+  ---
   EOF
 
-  tags = "core"
-  pool = "CORE"
+  tags = each.value.tags
+  pool = var.pool
 
+  os_type = "cloud-init"
   clone = var.template_name
   full_clone  = "false"
 
@@ -49,18 +49,27 @@ resource "proxmox_vm_qemu" "core" {
   bootdisk = "scsi0"
   agent = 1
 
+  ipconfig0 = "ip=${each.value.ip}${var.subnet_netmask},gw=${var.subnet_gateway}"
   network {
     model = "virtio"
-    bridge = "vmbr0"
+    bridge = var.nic_name
+    tag = var.nic_vlan
   }
 
   disks {
+    ide {
+      ide3 {
+        cloudinit {
+          storage = var.storage
+        }
+      }
+    }
     scsi {
       scsi0 {
         disk {
           size = each.value.memory
           cache = "none"
-          storage = "hdd-lvm"
+          storage = var.storage
           iothread = false
           backup = false
           discard = true
@@ -68,4 +77,8 @@ resource "proxmox_vm_qemu" "core" {
       }
     }
   }
+
+  ciuser = var.ciuser
+  cipassword  = var.cipass
+  onboot = each.value.onboot
 }
