@@ -28,7 +28,7 @@ This repository provides a comprehensive guide and resources for setting up a se
 
 ## Getting Started
 
-To get started with this project, please refer to the [Wiki](https://github.com/MuriloChianfa/self-hosted-secure-infra/wiki) for a detailed step-by-step tutorial. The wiki contains comprehensive instructions and guidelines to help you set up and use the project effectively.
+To get started with this project, please refer to the [Getting Started Wiki](https://github.com/MuriloChianfa/self-hosted-secure-infra/wiki/Getting-Started) for a detailed step-by-step tutorial. The wiki contains comprehensive instructions and guidelines to help you set up and use the project effectively.
 
 If you have any questions or run into issues, the wiki is a great place to start for troubleshooting and additional information.
 
