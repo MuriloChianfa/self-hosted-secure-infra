@@ -72,4 +72,3 @@ vm_images/*
 
 # Ansible.
 *.retry
-*/roles/*

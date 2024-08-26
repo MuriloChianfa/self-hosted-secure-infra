@@ -1,0 +1,21 @@
+---
+- name: be sure wireguard is installed
+  apt:
+    name: wireguard
+    state: present
+  tags: vpn
+
+- name: be sure wireguard is configured
+  file:
+    src: wg0.conf
+    dest: /etc/wireguard/wg0.conf
+  notify:
+    - restart wireguard
+  tags: vpn
+
+- name: be sure wireguard is running and enabled
+  service:
+    name: wireguard
+    state: started
+    enabled: yes
+  tags: vpn

@@ -1,0 +1,5 @@
+- name: talk to all hosts just so we can learn about them
+  gather_facts: True
+  hosts: all
+  tasks:
+    - shell: echo 'test'
