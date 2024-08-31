@@ -55,6 +55,11 @@ variable "cipass" {
   type = string
 }
 
+variable "allowedsshkey" {
+  description = "Allowed SSH public key to access ciuser"
+  type = string
+}
+
 variable "pool" {
   description = "Resource pool for this section"
   default = "CORE"

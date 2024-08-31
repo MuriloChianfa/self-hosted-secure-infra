@@ -14,14 +14,26 @@
     - restart-wireguard
   tags: wireguard-server
 
+- name: ensure ip forwarding is enable
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    reload: true
+  notify:
+    - sysctl flush ipv4 route table
+
+- name: ensure server keys already exists
+  stat:
+    path: /etc/wireguard/private.key
+  register: server_keys
+
 - name: be sure wireguard keys are present
   shell: wg genkey | tee private.key | wg pubkey > public.key
   args:
     executable: /bin/bash
     chdir: /etc/wireguard
-    creates:
-      - private.key
-      - public.key
+  when: not server_keys.stat.exists
 
 - name: be sure wireguard private key has correct permissions
   file:

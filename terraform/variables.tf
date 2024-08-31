@@ -10,6 +10,10 @@ variable "token_secret" {
   description = "Proxmox API Token Secret"
   type = string
 }
+variable "allowedsshkey" {
+  description = "Allowed SSH public key to access ciuser"
+  type = string
+}
 
 variable "proxmox_host" {
   description = "Hostname of Proxmox to apply"

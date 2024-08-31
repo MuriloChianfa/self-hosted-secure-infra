@@ -9,15 +9,28 @@
     state: directory
     mode: u=+r-wx,g=-rwx,o=-rwx+t
 
+- name: ensure server keys already exists
+  stat:
+    path: /etc/wireguard/clients/{{ item.client }}.key
+  register: key_file_stat
+  loop: "{{ clients }}"
+  loop_control:
+    label: "{{ item.client }}"
+
+- name: Set fact for existing key files
+  set_fact:
+    key_files_existing: "{{ key_files_existing | default({}) | combine({item.item.client: item.stat.exists}) }}"
+  loop: "{{ key_file_stat.results }}"
+  loop_control:
+    label: "{{ item.item.client }}"
+
 - name: be sure wireguard clients keys are created
   shell: wg genkey | tee {{ item.client }}.key | wg pubkey > {{ item.client }}.pub
   args:
     executable: /bin/bash
     chdir: /etc/wireguard/clients
-    creates:
-      - "{{ item.client }}.key"
-      - "{{ item.client }}.pub"
   loop: "{{ clients }}"
+  when: not key_files_existing[item.client]
 
 - name: loading public client keys
   ansible.builtin.shell: cat "{{ item.client | lower }}.pub"

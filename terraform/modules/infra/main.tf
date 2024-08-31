@@ -80,5 +80,6 @@ resource "proxmox_vm_qemu" "core" {
 
   ciuser = var.ciuser
   cipassword  = var.cipass
+  sshkeys = var.allowedsshkey
   onboot = true
 }

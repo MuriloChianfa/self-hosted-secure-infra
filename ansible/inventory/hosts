@@ -54,4 +54,5 @@ bastion      ansible_host=172.25.31.74   ansible_connection=ssh ansible_user=roo
 honeypot     ansible_host=172.25.31.75   ansible_connection=ssh ansible_user=root ansible_password=toor
 
 # tests
+vpn_first_step          ansible_host=192.168.0.254   ansible_connection=ssh ansible_user=root ansible_password=toor ansible_ssh_port=2222
 tests          ansible_host=172.25.31.76   ansible_connection=ssh ansible_user=root ansible_password=toor

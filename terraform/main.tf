@@ -28,6 +28,7 @@ module "core" {
   token_id = var.token_id
   token_secret = var.token_secret
   proxmox_host = var.proxmox_host
+  allowedsshkey = var.allowedsshkey
   template_name = "debian12-cloudinit-template"
   pool = "CORE"
   nic_vlan = 100
@@ -58,6 +59,7 @@ module "support" {
   token_id = var.token_id
   token_secret = var.token_secret
   proxmox_host = var.proxmox_host
+  allowedsshkey = var.allowedsshkey
   template_name = "debian12-cloudinit-template"
   pool = "SUPPORT"
   nic_vlan = 200
@@ -85,6 +87,7 @@ module "tools" {
   token_id = var.token_id
   token_secret = var.token_secret
   proxmox_host = var.proxmox_host
+  allowedsshkey = var.allowedsshkey
   template_name = "debian12-cloudinit-template"
   pool = "TOOLS"
   nic_vlan = 300
@@ -114,6 +117,7 @@ module "company" {
   token_id = var.token_id
   token_secret = var.token_secret
   proxmox_host = var.proxmox_host
+  allowedsshkey = var.allowedsshkey
   template_name = "debian12-cloudinit-template"
   pool = "COMPANY"
   nic_vlan = 400
@@ -141,6 +145,7 @@ module "development" {
   token_id = var.token_id
   token_secret = var.token_secret
   proxmox_host = var.proxmox_host
+  allowedsshkey = var.allowedsshkey
   template_name = "debian12-cloudinit-template"
   pool = "DEVELOPMENT"
   nic_vlan = 500
@@ -171,6 +176,7 @@ module "dmz" {
   token_id = var.token_id
   token_secret = var.token_secret
   proxmox_host = var.proxmox_host
+  allowedsshkey = var.allowedsshkey
   template_name = "debian12-cloudinit-template"
   pool = "DMZ"
   nic_vlan = 900
@@ -195,6 +201,7 @@ module "tests" {
   token_id = var.token_id
   token_secret = var.token_secret
   proxmox_host = var.proxmox_host
+  allowedsshkey = var.allowedsshkey
   template_name = "debian12-cloudinit-template"
   pool = "DMZ"
   nic_vlan = 900
