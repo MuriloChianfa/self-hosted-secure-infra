@@ -1,0 +1,6 @@
+---
+wireguard_subnet: 10.0.1.0/24
+wireguard_address: 10.0.1.1/24
+wireguard_public_address: 192.168.0.254
+wireguard_main_interface: eth0
+wireguard_listen_port: 5555

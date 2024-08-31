@@ -188,3 +188,20 @@ module "dmz" {
     907 = {"name" = "honeypot", "cores" = 2, "memory" = 1024, "hdd" = 32, "ip" = "172.25.31.75", "tags" = "dmz,security", "title" = "Selenium", "description" = "A security-focused VM designed to attract and detect attackers by mimicking vulnerable systems. It's used to monitor malicious activity and gather information about potential threats."},
   }
 }
+
+module "tests" {
+  source = "./modules/infra"
+  api_url = var.api_url
+  token_id = var.token_id
+  token_secret = var.token_secret
+  proxmox_host = var.proxmox_host
+  template_name = "debian12-cloudinit-template"
+  pool = "DMZ"
+  nic_vlan = 900
+  storage = "nvme-lvm"
+  subnet_netmask = "/28"
+  subnet_gateway = "172.25.31.78"
+  vms = {
+    908 = {"name" = "tests", "cores" = 8, "memory" = 8256, "hdd" = 46, "ip" = "172.25.31.76", "tags" = "dmz,tests", "title" = "Tests", "description" = "Simple VM to make some Ansible playbooks tests"},
+  }
+}

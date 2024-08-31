@@ -1,5 +1,11 @@
-- name: talk to all hosts just so we can learn about them
+- name: test one playbook role in tests environment
   gather_facts: True
-  hosts: all
+  hosts: tests
   tasks:
-    - shell: echo 'test'
+    - import_tasks: roles/base/main.yml
+    - include_role:
+        name: vpn
+        tasks_from: install-wireguard-server.yml
+    - include_role:
+        name: vpn
+        tasks_from: configure-default-clients.yml

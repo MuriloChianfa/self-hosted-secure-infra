@@ -1,0 +1,106 @@
+---
+- name: include wireguard clients vars
+  ansible.builtin.include_vars:
+    file: main.yml
+
+- name: be sure wireguard client folder exists
+  ansible.builtin.file:
+    path: /etc/wireguard/clients
+    state: directory
+    mode: u=+r-wx,g=-rwx,o=-rwx+t
+
+- name: be sure wireguard clients keys are created
+  shell: wg genkey | tee {{ item.client }}.key | wg pubkey > {{ item.client }}.pub
+  args:
+    executable: /bin/bash
+    chdir: /etc/wireguard/clients
+    creates:
+      - "{{ item.client }}.key"
+      - "{{ item.client }}.pub"
+  loop: "{{ clients }}"
+
+- name: loading public client keys
+  ansible.builtin.shell: cat "{{ item.client | lower }}.pub"
+  args:
+    executable: /bin/bash
+    chdir: /etc/wireguard/clients
+  register: client_pub_keys
+  loop: "{{ clients }}"
+
+- name: settuping public client keys
+  ansible.builtin.set_fact:
+    "client_{{ item.item.client | lower }}_pub": "{{ item.stdout }}"
+  loop: "{{ client_pub_keys.results }}"
+
+- name: be sure wireguard clients server conf are present
+  template:
+    src: wg0-server-client.conf
+    dest: /etc/wireguard/clients/{{ item.client | lower }}.server.conf
+    mode: u=+r-wx,g=-rwx,o=-rwx+t
+  vars:
+    client_public_key: "{{ hostvars[inventory_hostname]['client_' + item.client | lower + '_pub'] }}"
+  loop: "{{ clients }}"
+  tags: wireguard-server
+
+- name: loading client confs
+  ansible.builtin.shell: cat "{{ item.client | lower }}.server.conf"
+  args:
+    executable: /bin/bash
+    chdir: /etc/wireguard/clients
+  register: client_conf
+  loop: "{{ clients }}"
+
+- name: settuping public client keys
+  ansible.builtin.set_fact:
+    "client_{{ item.item.client | lower }}_conf": "{{ item.stdout }}"
+  loop: "{{ client_conf.results }}"
+
+- name: be sure wireguard client server conf in main config is present
+  ansible.builtin.lineinfile:
+    path: /etc/wireguard/wg0.conf
+    regexp: "^# {{ item.client | lower }}"
+    line: "\n{{ client_conf_content }}"
+    create: yes
+    insertafter: EOF
+  register: result
+  failed_when: result.failed and result.changed
+  loop: "{{ clients }}"
+  vars:
+    client_conf_content: "{{ hostvars[inventory_hostname]['client_' + item.client | lower + '_conf'] }}"
+  tags: wireguard-server
+
+- name: remove client server conf tmp file
+  ansible.builtin.file:
+    path: "/etc/wireguard/clients/{{ item.client | lower }}.server.conf"
+    state: absent
+  loop: "{{ clients }}"
+
+- name: loading private client keys
+  ansible.builtin.shell: cat "{{ item.client | lower }}.key"
+  args:
+    executable: /bin/bash
+    chdir: /etc/wireguard/clients
+  register: client_keys
+  loop: "{{ clients }}"
+
+- name: settuping private client keys
+  ansible.builtin.set_fact:
+    "client_{{ item.item.client | lower }}_key": "{{ item.stdout }}"
+  loop: "{{ client_keys.results }}"
+
+- name: load wireguard public key
+  shell: cat public.key
+  args:
+    executable: /bin/bash
+    chdir: /etc/wireguard
+  register: server_public_key
+
+- name: be sure wireguard clients conf are created
+  template:
+    src: wg0-client.conf
+    dest: /etc/wireguard/clients/{{ item.client | lower }}.conf
+    mode: u=+r-wx,g=-rwx,o=-rwx+t
+  loop: "{{ clients }}"
+  vars:
+    client_private_key: "{{ hostvars[inventory_hostname]['client_' + item.client | lower + '_key'] }}"
+  tags: wireguard-server

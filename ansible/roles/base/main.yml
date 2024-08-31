@@ -1,0 +1,22 @@
+- name: setup new secure sources list
+  template:
+    src: sources.list
+    dest: /etc/apt/sources.list
+
+- name: Remove default sources list
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/debian.sources
+    state: absent
+
+- name: adding default dns
+  lineinfile:
+    dest: /etc/resolvconf/resolv.conf.d/head
+    line: "nameserver 1.1.1.1"
+
+- name: reload resolvconf
+  shell: resolvconf -u
+
+- name: run apt cache update
+  apt:
+    update_cache: true
+  changed_when: false

@@ -1,0 +1,7 @@
+---
+- name: setup vpn server
+  gather_facts: True
+  hosts: vpn
+  tasks:
+    - include_tasks: roles/base/main.yml
+    - include_tasks: roles/vpn/install-wireguard-server.yml

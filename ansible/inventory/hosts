@@ -1,48 +1,57 @@
 [targets]
 
-10.250.101.243      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.250.101.244      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.250.101.245      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.250.101.246      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.250.101.247      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.250.101.248      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.250.101.249      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.250.101.250      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.250.101.251      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.19.242.45       ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.19.242.46       ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.19.242.47       ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.19.242.48       ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.19.242.49       ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.19.242.50       ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.175.19      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.175.20      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.175.21      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.175.22      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.175.23      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.175.24      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.175.25      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.175.26      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.12.133      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.12.134      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.12.135      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.12.136      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.12.137      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-192.168.12.138      ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.5          ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.6          ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.7          ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.8          ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.9          ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.10         ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.11         ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.12         ansible_connection=ssh        ansible_user=root      ansible_password=toor
-10.32.15.13         ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.25.31.68        ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.25.31.69        ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.25.31.70        ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.25.31.71        ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.25.31.72        ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.25.31.73        ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.25.31.74        ansible_connection=ssh        ansible_user=root      ansible_password=toor
-172.25.31.75        ansible_connection=ssh        ansible_user=root      ansible_password=toor
+# CORE
+ca           ansible_host=10.250.101.243 ansible_connection=ssh ansible_user=root ansible_password=toor
+ntp          ansible_host=10.250.101.244 ansible_connection=ssh ansible_user=root ansible_password=toor
+nfs          ansible_host=10.250.101.245 ansible_connection=ssh ansible_user=root ansible_password=toor
+ftp          ansible_host=10.250.101.246 ansible_connection=ssh ansible_user=root ansible_password=toor
+ldap         ansible_host=10.250.101.247 ansible_connection=ssh ansible_user=root ansible_password=toor
+dns1         ansible_host=10.250.101.248 ansible_connection=ssh ansible_user=root ansible_password=toor
+dns2         ansible_host=10.250.101.249 ansible_connection=ssh ansible_user=root ansible_password=toor
+dhcp         ansible_host=10.250.101.250 ansible_connection=ssh ansible_user=root ansible_password=toor
+radius       ansible_host=10.250.101.251 ansible_connection=ssh ansible_user=root ansible_password=toor
+# SUPPORT
+oscap        ansible_host=172.19.242.45  ansible_connection=ssh ansible_user=root ansible_password=toor
+openvas      ansible_host=172.19.242.46  ansible_connection=ssh ansible_user=root ansible_password=toor
+ndpmon       ansible_host=172.19.242.47  ansible_connection=ssh ansible_user=root ansible_password=toor
+ettercap     ansible_host=172.19.242.48  ansible_connection=ssh ansible_user=root ansible_password=toor
+arpwatch     ansible_host=172.19.242.49  ansible_connection=ssh ansible_user=root ansible_password=toor
+deauthalyzer ansible_host=172.19.242.50  ansible_connection=ssh ansible_user=root ansible_password=toor
+# TOOLS
+awx          ansible_host=192.168.175.19 ansible_connection=ssh ansible_user=root ansible_password=toor
+ntop         ansible_host=192.168.175.20 ansible_connection=ssh ansible_user=root ansible_password=toor
+squid        ansible_host=192.168.175.21 ansible_connection=ssh ansible_user=root ansible_password=toor
+snort        ansible_host=192.168.175.22 ansible_connection=ssh ansible_user=root ansible_password=toor
+zabbix       ansible_host=192.168.175.23 ansible_connection=ssh ansible_user=root ansible_password=toor
+graylog      ansible_host=192.168.175.24 ansible_connection=ssh ansible_user=root ansible_password=toor
+stirling     ansible_host=192.168.175.25 ansible_connection=ssh ansible_user=root ansible_password=toor
+bitwarden    ansible_host=192.168.175.26 ansible_connection=ssh ansible_user=root ansible_password=toor
+# COMPANY
+docs         ansible_host=192.168.12.133 ansible_connection=ssh ansible_user=root ansible_password=toor
+demo         ansible_host=192.168.12.134 ansible_connection=ssh ansible_user=root ansible_password=toor
+website      ansible_host=192.168.12.135 ansible_connection=ssh ansible_user=root ansible_password=toor
+archive      ansible_host=192.168.12.136 ansible_connection=ssh ansible_user=root ansible_password=toor
+registry     ansible_host=192.168.12.137 ansible_connection=ssh ansible_user=root ansible_password=toor
+owncloud     ansible_host=192.168.12.138 ansible_connection=ssh ansible_user=root ansible_password=toor
+# DEVELOPMENT
+ci           ansible_host=10.32.15.5     ansible_connection=ssh ansible_user=root ansible_password=toor
+cd           ansible_host=10.32.15.6     ansible_connection=ssh ansible_user=root ansible_password=toor
+clair        ansible_host=10.32.15.7     ansible_connection=ssh ansible_user=root ansible_password=toor
+sentry       ansible_host=10.32.15.8     ansible_connection=ssh ansible_user=root ansible_password=toor
+staging      ansible_host=10.32.15.9     ansible_connection=ssh ansible_user=root ansible_password=toor
+zaproxy      ansible_host=10.32.15.10    ansible_connection=ssh ansible_user=root ansible_password=toor
+registry     ansible_host=10.32.15.11    ansible_connection=ssh ansible_user=root ansible_password=toor
+selenium     ansible_host=10.32.15.12    ansible_connection=ssh ansible_user=root ansible_password=toor
+sonarqube    ansible_host=10.32.15.13    ansible_connection=ssh ansible_user=root ansible_password=toor
+# DMZ
+ns1          ansible_host=172.25.31.68   ansible_connection=ssh ansible_user=root ansible_password=toor
+ns2          ansible_host=172.25.31.69   ansible_connection=ssh ansible_user=root ansible_password=toor
+sni          ansible_host=172.25.31.70   ansible_connection=ssh ansible_user=root ansible_password=toor
+vpn          ansible_host=172.25.31.71   ansible_connection=ssh ansible_user=root ansible_password=toor
+imap         ansible_host=172.25.31.72   ansible_connection=ssh ansible_user=root ansible_password=toor
+smtp         ansible_host=172.25.31.73   ansible_connection=ssh ansible_user=root ansible_password=toor
+bastion      ansible_host=172.25.31.74   ansible_connection=ssh ansible_user=root ansible_password=toor
+honeypot     ansible_host=172.25.31.75   ansible_connection=ssh ansible_user=root ansible_password=toor
+
+# tests
+tests          ansible_host=172.25.31.76   ansible_connection=ssh ansible_user=root ansible_password=toor

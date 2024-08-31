@@ -1,0 +1,60 @@
+---
+- name: be sure wireguard is installed
+  apt:
+    name: wireguard
+    state: present
+  tags: wireguard-server
+
+- name: be sure wireguard is configured
+  template:
+    src: wg0.conf
+    dest: /etc/wireguard/wg0.conf
+    mode: u=+r-wx,g=-rwx,o=-rwx+t
+  notify:
+    - restart-wireguard
+  tags: wireguard-server
+
+- name: be sure wireguard keys are present
+  shell: wg genkey | tee private.key | wg pubkey > public.key
+  args:
+    executable: /bin/bash
+    chdir: /etc/wireguard
+    creates:
+      - private.key
+      - public.key
+
+- name: be sure wireguard private key has correct permissions
+  file:
+    path: /etc/wireguard/private.key
+    state: file
+    owner: root
+    group: root
+    mode: u=+r-wx,g=-rwx,o=-rwx+t
+
+- name: be sure wireguard public key has correct permissions
+  file:
+    path: /etc/wireguard/public.key
+    state: file
+    owner: root
+    group: root
+    mode: u=+r-wx,g=+r-wx,o=+r-wx+t
+
+- name: load wireguard private key
+  shell: cat private.key
+  args:
+    executable: /bin/bash
+    chdir: /etc/wireguard
+  register: wireguard_server_private_key
+
+- name: be sure wireguard private key is setted
+  ansible.builtin.lineinfile:
+    path: /etc/wireguard/wg0.conf
+    regexp: "^PrivateKey = "
+    line: "PrivateKey = {{ wireguard_server_private_key.stdout }}"
+
+- name: be sure wireguard is running and enabled
+  service:
+    name: wg-quick@wg0.service
+    state: started
+    enabled: yes
+  tags: wireguard-server
