@@ -1,0 +1,30 @@
+---
+- name: be sure freeradius users are configured
+  template:
+    src: users
+    dest: /etc/freeradius/3.0/mods-config/files/authorize
+    mode: u=+r-wx,g=+r-wx,o=+r-wx+t
+  tags: freeradius-server
+
+- name: be sure freeradius clients are configured
+  template:
+    src: clients.conf
+    dest: /etc/freeradius/3.0/clients.conf
+    mode: u=+r-wx,g=+r-wx,o=+r-wx+t
+  tags: freeradius-server
+
+- name: be sure freeradius server are configured
+  template:
+    src: server.conf
+    dest: /etc/freeradius/3.0/sites-enabled/default
+    mode: u=+r-wx,g=+r-wx,o=+r-wx+t
+  tags: freeradius-server
+
+- name: be sure freeradius is running and enabled
+  service:
+    name: freeradius.service
+    state: started
+    enabled: yes
+  notify:
+    - restart-freeradius
+  tags: freeradius-server

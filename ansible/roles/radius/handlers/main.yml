@@ -1,0 +1,5 @@
+---
+- name: restart-freeradius
+  service:
+    name: freeradius.service
+    state: restarted

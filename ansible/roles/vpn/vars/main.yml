@@ -1,6 +1,6 @@
 ---
 clients:
-  - client: murilo
+  - client: wgadmin
     address: 10.0.1.10/24
     allowed:
       - 10.0.1.0/24
@@ -10,7 +10,7 @@ clients:
       - 192.168.12.142/28
       - 10.32.15.14/28
       - 172.25.31.78/28
-  - client: pedro
+  - client: murilo
     address: 10.0.1.11/24
     allowed:
       - 10.250.101.254/26

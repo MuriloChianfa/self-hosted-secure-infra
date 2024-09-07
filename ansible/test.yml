@@ -4,8 +4,5 @@
   tasks:
     - import_tasks: roles/base/main.yml
     - include_role:
-        name: vpn
-        tasks_from: install-wireguard-server.yml
-    - include_role:
-        name: vpn
-        tasks_from: configure-default-clients.yml
+        name: radius
+        tasks_from: install-freeradius-server.yml

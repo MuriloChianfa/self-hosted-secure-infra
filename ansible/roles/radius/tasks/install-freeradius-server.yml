@@ -1,0 +1,41 @@
+---
+- name: be sure freeradius is installed
+  apt:
+    name:
+      - freeradius
+      - freeradius-utils
+      - ssl-cert
+    state: present
+    update_cache: yes
+    install_recommends: false
+  tags: freeradius-server
+
+- name: be sure freeradius bootstrap has correct permissions
+  file:
+    path: /etc/freeradius/3.0/certs/bootstrap
+    state: file
+    mode: u=+rx-w,g=+x-rw,o=+x-rw+t
+
+- name: be sure snakeoil certs are configured
+  shell: make-ssl-cert generate-default-snakeoil
+
+- name: be sure snakeoil certs has correct permissions
+  file:
+    path: "{{ item }}"
+    state: file
+    mode: u=+r-wx,g=+r-wx,o=+r-wx+t
+  with_items:
+    - /etc/ssl/certs/ssl-cert-snakeoil.pem
+    - /etc/ssl/private/ssl-cert-snakeoil.key
+
+- name: be sure freeradius certs are configured
+  shell: /etc/freeradius/3.0/certs/bootstrap
+
+- name: be sure freeradius is running and enabled
+  service:
+    name: freeradius.service
+    state: started
+    enabled: yes
+  notify:
+    - restart-freeradius
+  tags: freeradius-server
