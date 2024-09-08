@@ -1,0 +1,62 @@
+---
+- name: be sure openldap is installed
+  apt:
+    name:
+      - slapd
+      - ldap-utils
+      - debconf-utils
+    state: present
+    update_cache: yes
+    install_recommends: true
+  tags: openldap-server
+
+- name: check if openldap domain is already set
+  command: debconf-show slapd | grep 'slapd/domain' | grep 'example.com'
+  register: ldap_config_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: reconfigure openldap with basic variables
+  debconf:
+    name: slapd
+    question: '{{ item.question }}'
+    value: '{{ item.value }}'
+    vtype: '{{ item.vtype }}'
+  loop:
+    - { question: "slapd/password1", value: "ldapadmin", vtype: "password" }
+    - { question: "slapd/password2", value: "ldapadmin", vtype: "password" }
+    - { question: "slapd/domain", value: "example.com", vtype: "string" }
+    - { question: "slapd/backend", value: "MDB", vtype: "string" }
+    - { question: "slapd/purge_database", value: "true", vtype: "boolean" }
+    - { question: "slapd/move_old_database", value: "true", vtype: "boolean" }
+    - { question: "slapd/allow_ldap_v2", value: "false", vtype: "boolean" }
+  when: ldap_config_check.rc != 0
+  notify:
+    - restart-slapd
+  tags: openldap-server
+
+- name: check if ldap user already exists
+  command: ldapsearch -x -LLL -b "uid=oscap,ou=People,dc=example,dc=com" "(uid=oscap)"
+  register: ldap_user_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: add default ldap users and groups
+  template:
+    src: base.ldif
+    dest: /tmp/base.ldif
+    mode: u=+rw-x,g=+r-wx,o=+r-wx+t
+  when: ldap_user_check.rc != 0
+  tags: openldap-server
+
+- name: apply the new users and groups
+  command: ldapadd -x -D "cn=admin,dc=example,dc=com" -w ldapadmin -f /tmp/base.ldif
+  when: ldap_user_check.rc != 0
+  tags: openldap-server
+
+- name: be sure openldap is running and enabled
+  service:
+    name: slapd.service
+    state: started
+    enabled: yes
+  tags: openldap-server

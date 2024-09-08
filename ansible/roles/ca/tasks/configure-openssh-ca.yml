@@ -1,0 +1,36 @@
+---
+- name: be sure openssh is present
+  apt:
+    name:
+      - openssh-client
+      - openssh-server
+    state: present
+    update_cache: yes
+    install_recommends: true
+  tags: openssh-ca
+
+- name: check if ssh ca key already exists
+  stat:
+    path: /etc/ssh/ca
+  register: ca_key_check
+
+- name: generage ssh ca keys
+  shell: ssh-keygen -t rsa -b 4096 -f /etc/ssh/ca -N ''
+  when: ca_key_check.stat.exists == False
+  tags: openssh-ca
+
+- name: ensure the ca private key is readable only by root
+  file:
+    path: /etc/ssh/ca
+    owner: root
+    group: root
+    mode: u=+rw-x,g=-rwx,o=-rwx+t
+  tags: openssh-ca
+
+- name: ensure the ca public key is readable
+  file:
+    path: /etc/ssh/ca.pub
+    owner: root
+    group: root
+    mode: u=+rw-x,g=+r-wx,o=+r-wx+t
+  tags: openssh-ca

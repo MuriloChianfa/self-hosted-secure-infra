@@ -10,4 +10,3 @@ DEFAULT	Hint == "SLIP"
 	Framed-Protocol = SLIP
 
 oscap Cleartext-Password := "oscap"
-      Reply-Message := "Hello, %{User-Name}"

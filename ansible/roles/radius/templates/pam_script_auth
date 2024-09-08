@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$PAM_SUCCESS" != "0" ]; then
+    echo "Authentication failed for user $USER, skipping user creation."
+    exit 0
+fi
+
+if id "$PAM_USER" &>/dev/null; then
+    echo "User $PAM_USER already exists."
+    exit 0
+fi
+
+echo "Creating user $PAM_USER..."
+adduser --shell /bin/bash --home "/home/$PAM_USER" "$PAM_USER"
+
+if [ $? -eq 0 ]; then
+    echo "User $PAM_USER created successfully."
+    exit 0
+fi
+
+echo "Failed to create user $PAM_USER."
+exit 1

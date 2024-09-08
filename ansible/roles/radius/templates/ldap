@@ -1,0 +1,161 @@
+ldap {
+	server = "ldap://10.250.101.247"
+#	port = 389
+
+	identity = 'cn=admin,dc=example,dc=com'
+	password = ldapadmin
+
+	base_dn = 'dc=example,dc=com'
+
+	sasl {
+#		mech = 'PLAIN'
+#		proxy = 'autz_id'
+#		realm = 'example.org'
+	}
+
+	update {
+		control:Password-With-Header	+= 'userPassword'
+		control:			+= 'radiusControlAttribute'
+		request:			+= 'radiusRequestAttribute'
+		reply:				+= 'radiusReplyAttribute'
+	}
+
+	user_dn = "LDAP-UserDn"
+
+	user {
+		base_dn = "${..base_dn}"
+		filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
+
+		sasl {
+#			mech = 'PLAIN'
+#			proxy = &User-Name
+#			realm = 'example.org'
+		}
+	}
+
+	group {
+		base_dn = "${..base_dn}"
+		filter = '(objectClass=posixGroup)'
+
+		membership_attribute = 'memberOf'
+	}
+
+	profile {
+#		filter = '(objectclass=radiusprofile)'
+#		default = 'cn=radprofile,dc=example,dc=org'
+#		attribute = 'radiusProfileDn'
+	}
+
+	client {
+		base_dn = "${..base_dn}"
+		filter = '(objectClass=radiusClient)'
+
+		template {
+#			login				= 'test'
+#			password			= 'test'
+#			proto	 			= tcp
+#			require_message_authenticator	= yes
+
+#			coa_server {
+#				response_window = 2.0
+#			}
+		}
+
+		attribute {
+			ipaddr				= 'radiusClientIdentifier'
+			secret				= 'radiusClientSecret'
+		}
+	}
+
+	accounting {
+		reference = "%{tolower:type.%{Acct-Status-Type}}"
+
+		type {
+			start {
+				update {
+					description := "Online at %S"
+				}
+			}
+
+			interim-update {
+				update {
+					description := "Last seen at %S"
+				}
+			}
+
+			stop {
+				update {
+					description := "Offline at %S"
+				}
+			}
+		}
+	}
+
+	post-auth {
+		update {
+			description := "Authenticated at %S"
+		}
+	}
+
+	options {
+		chase_referrals = yes
+		rebind = yes
+
+		res_timeout = 10
+		srv_timelimit = 3
+		net_timeout = 1
+		idle = 60
+		probes = 3
+		interval = 3
+		ldap_debug = 0x0028
+	}
+
+	tls {
+		# Set this to 'yes' to use TLS encrypted connections
+		# to the LDAP database by using the StartTLS extended
+		# operation.
+		#
+		# The StartTLS operation is supposed to be
+		# used with normal ldap connections instead of
+		# using ldaps (port 636) connections
+#		start_tls = yes
+
+#		ca_file	= ${certdir}/cacert.pem
+
+#		ca_path	= ${certdir}
+#		certificate_file = /path/to/radius.crt
+#		private_key_file = /path/to/radius.key
+#		random_file = /dev/urandom
+
+ 		#  Certificate Verification requirements.  Can be:
+		#    'never' (do not even bother trying)
+ 		#    'allow' (try, but don't fail if the certificate
+		#		cannot be verified)
+		#    'demand' (fail if the certificate does not verify)
+		#    'hard'  (similar to 'demand' but fails if TLS
+		#             cannot negotiate)
+ 		#
+		#  The default is libldap's default, which varies based
+		#  on the contents of ldap.conf.
+
+#		require_cert	= 'demand'
+
+		#
+		#  Minimum TLS version to accept. We STRONGLY recommend
+		#  setting this to "1.2"
+		#
+#		tls_min_version = "1.2"
+	}
+
+	pool {
+		start = ${thread[pool].start_servers}
+		min = ${thread[pool].min_spare_servers}
+		max = ${thread[pool].max_servers}
+		spare = ${thread[pool].max_spare_servers}
+		uses = 0
+		retry_delay = 30
+		lifetime = 0
+		idle_timeout = 60
+	}
+}
+base_dn = "dc=example,dc=com"

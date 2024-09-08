@@ -1,0 +1,9 @@
+- name: Setup OpenLDAP service user signin
+  gather_facts: True
+  hosts: ldap
+  become: true
+  tasks:
+    - import_tasks: roles/base/main.yml
+    - include_role:
+        name: ldap
+        tasks_from: install-openldap-server.yml

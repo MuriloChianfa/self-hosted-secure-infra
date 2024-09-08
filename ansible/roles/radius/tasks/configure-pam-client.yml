@@ -1,0 +1,83 @@
+---
+- name: be sure libpam-radius are installed
+  apt:
+    name:
+      - libpam-radius-auth
+      - libpam-script
+    state: present
+    update_cache: yes
+    install_recommends: false
+  tags: freeradius-client
+
+- name: be sure sshd challenge are enabled
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "ChallengeResponseAuthentication"
+    line: "ChallengeResponseAuthentication yes"
+  tags: freeradius-client
+
+- name: be sure sshd pam challenge are enabled
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "UsePAM"
+    line: "UsePAM yes"
+  tags: freeradius-client
+
+- name: be sure sshd accept password challenges
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "PasswordAuthentication"
+    line: "PasswordAuthentication yes"
+  tags: freeradius-client
+
+- name: be sure sshd accept password challenges
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication no"
+    line: "#PasswordAuthentication no"
+  tags: freeradius-client
+
+- name: be sure sshd pam auth is configured
+  template:
+    src: sshd
+    dest: /etc/pam.d/sshd
+    mode: u=+rw-x,g=+r-wx,o=+r-wx+t
+  tags: freeradius-client
+
+- name: be sure pam radius config are configured
+  template:
+    src: pam_radius_auth.conf
+    dest: /etc/pam_radius_auth.conf
+    mode: u=+rw-x,g=+r-wx,o=+r-wx+t
+  tags: freeradius-client
+
+- name: be sure radius folder exists
+  ansible.builtin.file:
+    path: /etc/raddb
+    state: directory
+    mode: u=+r-wx,g=-rwx,o=-rwx+t
+
+- name: be sure pam scripts folder exists
+  ansible.builtin.file:
+    path: /usr/share/libpam-script/
+    state: directory
+    mode: u=+rx-w,g=+rx-w,o=+rx-w+t
+
+- name: be sure pam scripts are present
+  template:
+    src: pam_script_auth
+    dest: /usr/share/libpam-script/pam_script_auth
+    mode: u=+rxw,g=+rx-w,o=+rx-w+t
+  tags: freeradius-client
+
+- name: be sure pam radius config are in radius folder
+  shell: cp /etc/pam_radius_auth.conf /etc/raddb/server
+  notify:
+    - restart-sshd
+
+- name: be sure sshd is running and enabled
+  service:
+    name: sshd.service
+    state: started
+    enabled: yes
+  tags: freeradius-client

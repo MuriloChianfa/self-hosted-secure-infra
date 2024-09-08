@@ -1,0 +1,9 @@
+- name: Generate CA default keys
+  gather_facts: True
+  hosts: ca
+  become: true
+  tasks:
+    - import_tasks: roles/base/main.yml
+    - include_role:
+        name: ca
+        tasks_from: configure-openssh-ca.yml

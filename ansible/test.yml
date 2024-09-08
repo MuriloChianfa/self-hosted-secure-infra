@@ -1,8 +1,0 @@
-- name: test one playbook role in tests environment
-  gather_facts: True
-  hosts: tests
-  tasks:
-    - import_tasks: roles/base/main.yml
-    - include_role:
-        name: radius
-        tasks_from: install-freeradius-server.yml

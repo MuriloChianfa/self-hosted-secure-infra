@@ -1,6 +1,10 @@
 ---
-- name: Setup all VMs services
+- name: Setup base services to all VMs
   gather_facts: True
   hosts: all
+  timeout: 30
   tasks:
     - import_tasks: roles/base/main.yml
+    - include_role:
+        name: radius
+        tasks_from: configure-pam-client.yml

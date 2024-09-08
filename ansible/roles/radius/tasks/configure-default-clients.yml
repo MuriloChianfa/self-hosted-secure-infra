@@ -2,6 +2,13 @@
 - name: be sure freeradius users are configured
   template:
     src: users
+    dest: /etc/freeradius/3.0/users
+    mode: u=+r-wx,g=+r-wx,o=+r-wx+t
+  tags: freeradius-server
+
+- name: be sure freeradius users are configured
+  template:
+    src: users
     dest: /etc/freeradius/3.0/mods-config/files/authorize
     mode: u=+r-wx,g=+r-wx,o=+r-wx+t
   tags: freeradius-server
@@ -13,11 +20,26 @@
     mode: u=+r-wx,g=+r-wx,o=+r-wx+t
   tags: freeradius-server
 
+- name: be sure freeradius-ldap are configured
+  template:
+    src: ldap
+    dest: /etc/freeradius/3.0/mods-available/ldap
+    mode: u=+r-wx,g=+r-wx,o=+r-wx+t
+  tags: freeradius-server
+
+- name: ensure ldap module is enabled
+  file:
+    src: /etc/freeradius/3.0/mods-available/ldap
+    dest: /etc/freeradius/3.0/mods-enabled/ldap
+    state: link
+
 - name: be sure freeradius server are configured
   template:
     src: server.conf
     dest: /etc/freeradius/3.0/sites-enabled/default
     mode: u=+r-wx,g=+r-wx,o=+r-wx+t
+  notify:
+    - restart-freeradius
   tags: freeradius-server
 
 - name: be sure freeradius is running and enabled
@@ -25,6 +47,4 @@
     name: freeradius.service
     state: started
     enabled: yes
-  notify:
-    - restart-freeradius
   tags: freeradius-server

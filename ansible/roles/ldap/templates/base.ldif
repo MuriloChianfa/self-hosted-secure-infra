@@ -1,0 +1,14 @@
+dn: ou=People,dc=example,dc=com
+objectClass: organizationalUnit
+ou: People
+
+dn: uid=oscap,ou=People,dc=example,dc=com
+objectClass: inetOrgPerson
+cn: oscap
+sn: User
+uid: oscap
+userPassword: {SSHA}1xFY3slKo6MRqBDLshRRx7eps3g32WTk
+
+dn: ou=Groups,dc=example,dc=com
+objectClass: organizationalUnit
+ou: Groups
