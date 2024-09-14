@@ -1,0 +1,29 @@
+---
+- name: be sure bind9 is installed
+  apt:
+    name:
+      - bind9
+      - bind9-dnsutils
+    state: present
+    update_cache: yes
+    install_recommends: false
+  tags: bind9-server
+
+- name: copy bind9 templates
+  template:
+    src: "{{ item }}"
+    dest: "/etc/bind/{{ item }}"
+  with_items:
+    - named.conf
+    - named.conf.options
+    - named.conf.internal
+    - internal.zone
+    - internal.rzone
+  tags: bind9-server
+
+- name: be sure bind9 is running and enabled
+  service:
+    name: bind9.service
+    state: restarted
+    enabled: yes
+  tags: bind9-server

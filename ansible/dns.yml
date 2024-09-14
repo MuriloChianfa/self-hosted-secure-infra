@@ -1,0 +1,22 @@
+- name: Setup BIND9 services primary
+  gather_facts: True
+  hosts: dns1
+  become: true
+  vars:
+    hostname: "ns1"
+    listen_ip: "10.250.101.248"
+  tasks:
+    - include_role:
+        name: dns
+        tasks_from: install-bind9-recursive.yml
+- name: Setup BIND9 services secondary
+  gather_facts: True
+  hosts: dns2
+  become: true
+  vars:
+    hostname: "ns2"
+    listen_ip: "10.250.101.249"
+  tasks:
+    - include_role:
+        name: dns
+        tasks_from: install-bind9-recursive.yml

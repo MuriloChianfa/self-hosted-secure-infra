@@ -1,0 +1,11 @@
+zone "internal" IN {
+    type master;
+    file "internal.zone";
+    allow-update { none; };
+};
+
+zone "101.250.10.in-addr.arpa" IN {
+    type master;
+    file "internal.rzone";
+    allow-update { none; };
+};

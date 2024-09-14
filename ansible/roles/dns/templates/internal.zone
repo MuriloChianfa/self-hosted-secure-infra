@@ -1,0 +1,67 @@
+$TTL 86400
+@   IN  SOA {{ hostname }}.internal. admin.internal. (
+        2024091301 ; Serial
+        3600       ; Refresh
+        1800       ; Retry
+        1209600    ; Expire
+        86400 )    ; Minimum TTL
+
+; Name servers
+@    IN  NS  {{ hostname }}.internal.
+
+; A Records
+ca IN  A  10.250.101.243
+ntp IN  A  10.250.101.244
+nfs IN  A  10.250.101.245
+ftp IN  A  10.250.101.246
+ldap IN  A  10.250.101.247
+dns1 IN  A  10.250.101.248
+dns2 IN  A  10.250.101.249
+dhcp IN  A  10.250.101.250
+radius IN  A  10.250.101.251
+
+oscap IN  A  172.19.242.45
+openvas IN  A  172.19.242.46
+ndpmon IN  A  172.19.242.47
+ettercap IN  A  172.19.242.48
+arpwatch IN  A  172.19.242.49
+deauthalyzer IN  A  172.19.242.50
+
+awx IN  A  192.168.175.19
+ntop IN  A  192.168.175.20
+squid IN  A  192.168.175.21
+snort IN  A  192.168.175.22
+zabbix IN  A  192.168.175.23
+graylog IN  A  192.168.175.24
+stirling IN  A  192.168.175.25
+bitwarden IN  A  192.168.175.26
+
+docs IN  A  192.168.12.133
+demo IN  A  192.168.12.134
+website IN  A  192.168.12.135
+archive IN  A  192.168.12.136
+registry IN  A  192.168.12.137
+owncloud IN  A  192.168.12.138
+
+ci IN  A  10.32.15.5
+cd IN  A  10.32.15.6
+clair IN  A  10.32.15.7
+sentry IN  A  10.32.15.8
+staging IN  A  10.32.15.9
+zaproxy IN  A  10.32.15.10
+registry IN  A  10.32.15.11
+selenium IN  A  10.32.15.12
+sonarqube IN  A  10.32.15.13
+
+ns1 IN  A  172.25.31.68
+ns2 IN  A  172.25.31.69
+sni IN  A  172.25.31.70
+vpn IN  A  172.25.31.71
+imap IN  A  172.25.31.72
+smtp IN  A  172.25.31.73
+bastion IN  A  172.25.31.74
+honeypot IN  A  172.25.31.75
+
+; CNAME Records
+dns1  IN  CNAME ns1
+dns2  IN  CNAME ns2
