@@ -33,6 +33,7 @@ website      ansible_host=192.168.12.135 ansible_connection=ssh ansible_user=roo
 archive      ansible_host=192.168.12.136 ansible_connection=ssh ansible_user=root ansible_password=toor
 registry     ansible_host=192.168.12.137 ansible_connection=ssh ansible_user=root ansible_password=toor
 owncloud     ansible_host=192.168.12.138 ansible_connection=ssh ansible_user=root ansible_password=toor
+keyserver    ansible_host=192.168.12.139 ansible_connection=ssh ansible_user=root ansible_password=toor
 # DEVELOPMENT
 ci           ansible_host=10.32.15.5     ansible_connection=ssh ansible_user=root ansible_password=toor
 cd           ansible_host=10.32.15.6     ansible_connection=ssh ansible_user=root ansible_password=toor

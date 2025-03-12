@@ -41,6 +41,19 @@
   ignore_errors: yes
   changed_when: false
 
+- name: setup the change default admin password
+  template:
+    src: password.ldif
+    dest: /tmp/password.ldif
+    mode: u=+rw-x,g=+r-wx,o=+r-wx+t
+  when: ldap_user_check.rc != 0
+  tags: openldap-server
+
+- name: apply the change default admin password
+  command: ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/password.ldif
+  when: ldap_user_check.rc != 0
+  tags: openldap-server
+
 - name: add default ldap users and groups
   template:
     src: base.ldif
@@ -50,7 +63,7 @@
   tags: openldap-server
 
 - name: apply the new users and groups
-  command: ldapadd -x -D "cn=admin,dc=example,dc=com" -w ldapadmin -f /tmp/base.ldif
+  command: ldapadd -x -D "cn=admin,dc=example,dc=com" -w "{SSHA}K2w75TYRr175HxFkputOv698StKAFCsr" -f /tmp/base.ldif
   when: ldap_user_check.rc != 0
   tags: openldap-server
 

@@ -61,7 +61,3 @@ imap IN  A  172.25.31.72
 smtp IN  A  172.25.31.73
 bastion IN  A  172.25.31.74
 honeypot IN  A  172.25.31.75
-
-; CNAME Records
-dns1  IN  CNAME ns1
-dns2  IN  CNAME ns2

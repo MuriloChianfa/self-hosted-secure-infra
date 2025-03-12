@@ -12,6 +12,7 @@ provider "proxmox" {
   pm_api_token_id = var.token_id
   pm_api_token_secret = var.token_secret
   pm_tls_insecure = true
+  pm_timeout = 600
   pm_log_enable = true
   pm_debug = true
   pm_log_file = "terraform-plugin-proxmox.log"
@@ -131,6 +132,7 @@ module "company" {
     403 = {"name" = "archive", "cores" = 1, "memory" = 768, "hdd" = 32, "ip" = "192.168.12.136", "tags" = "company,website", "title" = "Company Packages", "description" = "A repository server that hosts package files like .deb, .rpm. This VM allows for the distribution and management of custom or third-party software packages within the organization."},
     404 = {"name" = "registry", "cores" = 2, "memory" = 1024, "hdd" = 86, "ip" = "192.168.12.137", "tags" = "company,website,docker", "title" = "Private Docker Registry", "description" = "A private Docker registry used to store and distribute Docker container images. It allows teams to share, version, and deploy containerized applications in a controlled environment."},
     405 = {"name" = "owncloud", "cores" = 2, "memory" = 2048, "hdd" = 128, "ip" = "192.168.12.138", "tags" = "company,website,storage", "title" = "OwnCloud", "description" = "A self-hosted cloud storage platform that allows users to store and sync files across devices. It offers features similar to commercial cloud storage services, but with more control and privacy."},
+    406 = {"name" = "keyserver", "cores" = 1, "memory" = 1024, "hdd" = 64, "ip" = "192.168.12.139", "tags" = "company,website,crypto", "title" = "OpenPGP", "description" = "A cryptographic key management server that securely stores, distributes, and manages encryption keys. It ensures secure communication and data protection within the company's infrastructure."},
   }
 }
 
